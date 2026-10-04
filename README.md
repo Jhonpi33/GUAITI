@@ -96,3 +96,6 @@ El archivo `render.yaml` define los dos servicios:
    Variable de entorno: `VITE_API_URL=https://guaiti-api.onrender.com/api/v1`.
 
 Atlas debe permitir `0.0.0.0/0` en *Network Access* para que Render pueda conectarse.
+
+Opcional (recomendado en producción): define `CORS_ORIGIN` en **guaiti-api** con la URL del sitio
+(`https://guaiti-web.onrender.com`) para restringir qué dominios pueden consumir la API.
