@@ -1,23 +1,37 @@
 <template>
   <q-page padding class="pagina-listado q-pa-md">
-    <div class="row items-center q-mb-md">
-      <div class="text-h5">Inicio</div>
-      <q-space />
-      <q-btn flat dense icon="refresh" label="Actualizar" no-caps @click="cargar" :disable="cargando" />
+    <div class="hero-inicio row items-center q-col-gutter-md">
+      <div class="col-12 col-sm-auto">
+        <img :src="logo" alt="Logo Gua-iti" class="hero-logo" />
+      </div>
+      <div class="col">
+        <div class="hero-titulo">Gua-iti Aventura Sin Límites</div>
+        <div class="hero-subtitulo">San Gil, Santander · Cuevas y cuatrimotos</div>
+        <div class="hero-raya"></div>
+      </div>
+      <div class="col-12 col-sm-auto">
+        <q-btn
+          flat
+          dense
+          icon="refresh"
+          label="Actualizar"
+          no-caps
+          :disable="cargando"
+          @click="cargar"
+        />
+      </div>
     </div>
 
-    <div class="row q-col-gutter-md">
+    <div class="row q-col-gutter-md q-mb-md">
       <div v-for="tarjeta in tarjetas" :key="tarjeta.titulo" class="col-12 col-sm-6 col-md-3">
-        <q-card flat bordered class="tarjeta-tabla">
-          <q-card-section>
-            <div class="text-overline text-grey-5">{{ tarjeta.titulo }}</div>
-            <div class="text-h4 text-primary">
-              <q-spinner v-if="cargando" size="1.6rem" />
-              <template v-else>{{ tarjeta.valor }}</template>
-            </div>
-            <div class="text-caption text-grey-6">{{ tarjeta.detalle }}</div>
-          </q-card-section>
-        </q-card>
+        <div class="tarjeta-kpi q-pa-md">
+          <div class="kpi-etiqueta">{{ tarjeta.titulo }}</div>
+          <div class="kpi-valor q-mt-sm">
+            <q-spinner v-if="cargando" size="1.6rem" color="primary" />
+            <template v-else>{{ tarjeta.valor }}</template>
+          </div>
+          <div class="kpi-detalle q-mt-xs">{{ tarjeta.detalle }}</div>
+        </div>
       </div>
     </div>
 
@@ -32,23 +46,30 @@
             class="col-12 col-sm-6 col-md-4"
           >
             <q-card flat bordered class="tarjeta-tabla detalle-activo full-height">
+              <div class="actividad-foto">
+                <img v-if="actividad.imagenes?.[0]" :src="actividad.imagenes[0]" :alt="actividad.nombre" />
+                <div v-else class="actividad-foto-placeholder">
+                  <q-icon :name="actividad.tipoRecurso === 'moto' ? 'motorcycle' : 'landscape'" size="2.4rem" />
+                </div>
+              </div>
               <q-card-section>
                 <div class="row items-center">
-                  <div class="text-subtitle1 text-weight-medium col">{{ actividad.nombre }}</div>
+                  <div class="actividad-nombre col">{{ actividad.nombre }}</div>
                   <q-chip
                     dense
                     size="sm"
+                    class="chip-semaforo"
                     :color="actividad.activa ? 'positive' : 'negative'"
                     text-color="white"
                   >
                     {{ actividad.activa ? 'Activa' : 'Inactiva' }}
                   </q-chip>
                 </div>
-                <div class="text-h6 text-secondary q-mt-sm">
+                <div class="actividad-precio q-mt-sm">
                   {{ formatoCop(actividad.precioPorPersona) }}
                 </div>
-                <div class="text-caption text-grey-5">Precio por persona</div>
-                <div class="text-caption text-grey-5 q-mt-xs">
+                <div class="text-caption texto-suave">Precio por persona</div>
+                <div class="text-caption texto-suave q-mt-xs">
                   Duración: {{ formatoDuracion(actividad.duracionMin) }}
                 </div>
               </q-card-section>
@@ -76,6 +97,7 @@ import { listarClientes } from '../services/clientes';
 import { listarMotos } from '../services/motos';
 import { listarActividades } from '../services/actividades';
 import { formatoCop, formatoDuracion } from '../utils/formato';
+import logo from '../assets/logo.png';
 
 const auth = useAuthStore();
 

@@ -58,7 +58,13 @@
       loading-label="Cargando..."
     >
       <template #body-estado="props">
-        <q-chip dense size="sm" :color="colorEstado(props.row.estado)" text-color="white">
+        <q-chip
+          dense
+          size="sm"
+          class="chip-semaforo"
+          :color="colorEstado(props.row.estado)"
+          :text-color="props.row.estado === 'mantenimiento' ? 'dark' : 'white'"
+        >
           {{ etiquetaEstado(props.row.estado) }}
         </q-chip>
       </template>

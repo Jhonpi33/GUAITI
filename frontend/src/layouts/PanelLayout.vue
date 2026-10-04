@@ -11,8 +11,11 @@
           aria-label="Abrir menú"
           @click="esquemaAbierto = !esquemaAbierto"
         />
-        <q-toolbar-title class="text-weight-medium">
-          <span class="text-primary">Gua-iti</span> Aventura Sin Límites
+        <q-toolbar-title class="text-weight-medium row items-center no-wrap">
+          <img :src="logo" alt="Gua-iti" class="logo-cabecera q-mr-sm" />
+          <span class="titulo-cabecera">
+            <span class="text-primary">Gua-iti</span> Aventura Sin Límites
+          </span>
         </q-toolbar-title>
 
         <div class="column items-end no-wrap q-mr-sm gt-sm">
@@ -25,7 +28,15 @@
     </q-header>
 
     <q-drawer v-model="esquemaAbierto" show-if-above :breakpoint="768" bordered class="fondo-cajon">
-      <q-list padding class="q-mt-md">
+      <div class="marca-cajon">
+        <img :src="logo" alt="Logo Gua-iti" />
+        <div>
+          <div class="marca-nombre">Gua-iti</div>
+          <div class="marca-lema">Aventura sin límites</div>
+        </div>
+      </div>
+
+      <q-list padding class="q-mt-sm">
         <q-item
           v-for="item in menuVisible"
           :key="item.to"
@@ -33,6 +44,7 @@
           clickable
           v-ripple
           class="rounded-borders q-mx-sm q-mb-xs"
+          @click="cerrarCajonMovil"
         >
           <q-item-section avatar>
             <q-icon :name="item.icono" />
@@ -52,11 +64,16 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import logo from '../assets/logo.png';
 
 const auth = useAuthStore();
 const router = useRouter();
 
 const esquemaAbierto = ref(false);
+
+function cerrarCajonMovil() {
+  if (window.innerWidth < 768) esquemaAbierto.value = false;
+}
 
 const menu = [
   { to: '/inicio', etiqueta: 'Inicio', icono: 'home', roles: ['admin', 'secretario', 'guia'] },

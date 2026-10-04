@@ -3,8 +3,8 @@
     <q-card class="login-tarjeta q-pa-sm">
       <q-card-section class="column items-center q-pt-lg q-pb-sm">
         <img :src="logo" alt="Logo Gua-iti" class="login-logo" />
-        <div class="text-h5 q-mt-lg text-center">Gua-iti Aventura Sin Límites</div>
-        <div class="text-subtitle2 text-grey-5 q-mt-xs">San Gil, Santander</div>
+        <div class="login-titulo text-h5 q-mt-lg text-center">Gua-iti Aventura Sin Límites</div>
+        <div class="text-overline text-secondary q-mt-xs">San Gil, Santander</div>
       </q-card-section>
 
       <q-card-section>
