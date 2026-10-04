@@ -5,6 +5,9 @@ node_modules/
 .env
 .env.local
 .env.*.local
+*.env
+atlas-credentials.env
+!backend/.env.example
 
 # Salidas de build
 frontend/dist/

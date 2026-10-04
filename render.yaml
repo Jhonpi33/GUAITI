@@ -1,0 +1,34 @@
+# Blueprint de Render: API (backend) + sitio estático (frontend)
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: guaiti-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_NOMBRE
+        value: Administrador
+      - key: ADMIN_CORREO
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+
+  - type: static
+    name: guaiti-web
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://guaiti-api.onrender.com/api/v1

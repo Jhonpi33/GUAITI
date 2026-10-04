@@ -53,11 +53,19 @@ export const crearGuiaSchema = Joi.object({
   }),
   telefono: Joi.string().trim().max(30).allow('', null),
   activo: Joi.boolean(),
-  // Creación opcional del usuario con rol guia
+  // El usuario con rol guia solo se exige cuando crearUsuario es true
   crearUsuario: Joi.boolean().default(false),
-  correo,
-  password,
-}).or('crearUsuario');
+  correo: Joi.when('crearUsuario', {
+    is: true,
+    then: correo,
+    otherwise: Joi.string().trim().email({ tlds: { allow: false } }).allow('', null).optional(),
+  }),
+  password: Joi.when('crearUsuario', {
+    is: true,
+    then: password,
+    otherwise: Joi.string().allow('', null).optional(),
+  }),
+});
 
 export const editarGuiaSchema = Joi.object({
   nombre: Joi.string().trim().min(2).max(120),

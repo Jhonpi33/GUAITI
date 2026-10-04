@@ -7,7 +7,6 @@ export async function listarTarifas({ q = '', pagina, limite, actividadId = '', 
   const filtro = {};
   if (actividadId) filtro.actividadId = actividadId;
   if (unidad) filtro.unidad = unidad;
-  if (q) filtro.unidad = q;
 
   const [items, total] = await Promise.all([
     TarifaPagoGuia.find(filtro)
