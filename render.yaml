@@ -22,8 +22,10 @@ services:
       - key: ADMIN_PASSWORD
         sync: false
 
-  - type: static
+  # Sitio estático (Render exige type: web + runtime: static, NO type: static)
+  - type: web
     name: guaiti-web
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
