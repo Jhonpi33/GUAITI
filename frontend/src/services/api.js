@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Notify } from 'quasar';
+import { error as alertaError } from './alertas';
 
 export const CLAVE_SESION = 'guaiti_auth';
 
@@ -60,7 +60,7 @@ api.interceptors.response.use(
     }
 
     if (error.config?.silenciarNotificacion !== true) {
-      Notify.create({ type: 'negative', message: mensajeDeError(error) });
+      alertaError(mensajeDeError(error));
     }
 
     return Promise.reject(error);

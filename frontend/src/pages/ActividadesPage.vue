@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="pagina-listado q-pa-md">
+  <q-page ref="paginaEl" padding class="pagina-listado q-pa-md">
     <div class="row items-center q-mb-md">
       <div class="text-h5">Actividades</div>
       <q-space />
@@ -183,15 +183,15 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useQuasar } from 'quasar';
+import { ref, computed, onMounted, nextTick } from 'vue';
+import { animarEntrada, animarTabla } from '../utils/animaciones';
 import { useAuthStore } from '../stores/auth';
 import { useListado } from '../composables/useListado';
 import { listarActividades, crearActividad, actualizarActividad } from '../services/actividades';
+import { exito } from '../services/alertas';
 import { reglas } from '../utils/validaciones';
 import { formatoCop } from '../utils/formato';
 
-const $q = useQuasar();
 const auth = useAuthStore();
 
 // Solo el administrador crea o edita actividades (el backend también lo exige)
@@ -260,7 +260,7 @@ async function guardar() {
     const respuesta = editando.value
       ? await actualizarActividad(registro.value._id, datos)
       : await crearActividad(datos);
-    $q.notify({ type: 'positive', message: respuesta.data.message });
+    exito(respuesta.data.message);
     dialogo.value = false;
     await cargar();
   } catch {
@@ -270,5 +270,12 @@ async function guardar() {
   }
 }
 
-onMounted(cargar);
+const paginaEl = ref(null);
+
+onMounted(async () => {
+  animarEntrada(paginaEl.value?.$el || paginaEl.value);
+  await cargar();
+  await nextTick();
+  animarTabla(paginaEl.value?.$el || paginaEl.value);
+});
 </script>

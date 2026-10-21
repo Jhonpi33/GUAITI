@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="pagina-listado q-pa-md">
+  <q-page ref="paginaEl" padding class="pagina-listado q-pa-md">
     <div class="text-h5 q-mb-md">Configuración</div>
 
     <q-card flat bordered class="tarjeta-tabla">
@@ -359,17 +359,17 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
-import { useQuasar } from 'quasar';
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import { animarEntrada, animarTabla } from '../utils/animaciones';
 import { useAuthStore } from '../stores/auth';
 import { useListado } from '../composables/useListado';
 import { listarParametros, actualizarParametro } from '../services/parametros';
 import { listarTarifas, crearTarifa, actualizarTarifa, eliminarTarifa } from '../services/tarifas';
 import { listarActividades } from '../services/actividades';
+import { exito, advertencia, confirmar } from '../services/alertas';
 import { reglas } from '../utils/validaciones';
 import { formatoCop } from '../utils/formato';
 
-const $q = useQuasar();
 const auth = useAuthStore();
 
 /* --------------------------- Parámetros --------------------------- */
@@ -438,7 +438,7 @@ async function guardarParametro() {
       valor,
       descripcion: descripcionEditada.value.trim(),
     });
-    $q.notify({ type: 'positive', message: data.message });
+    exito(data.message);
     dialogoParametro.value = false;
     await cargar();
   } catch {
@@ -517,7 +517,7 @@ async function guardarTarifa() {
   const hasta = tarifa.value.hasta === '' || tarifa.value.hasta === null ? null : Number(tarifa.value.hasta);
 
   if (hasta !== null && desde > hasta) {
-    $q.notify({ type: 'warning', message: "El valor 'desde' no puede ser mayor que 'hasta'" });
+    advertencia("El valor 'desde' no puede ser mayor que 'hasta'");
     return;
   }
 
@@ -534,7 +534,7 @@ async function guardarTarifa() {
     const respuesta = editandoTarifa.value
       ? await actualizarTarifa(tarifa.value._id, datos)
       : await crearTarifa(datos);
-    $q.notify({ type: 'positive', message: respuesta.data.message });
+    exito(respuesta.data.message);
     dialogoTarifa.value = false;
     await cargarTarifas();
   } catch {
@@ -544,22 +544,22 @@ async function guardarTarifa() {
   }
 }
 
-function confirmarEliminarTarifa(fila) {
+async function confirmarEliminarTarifa(fila) {
   const nombre = fila.actividadId?.nombre || 'esta actividad';
-  $q.dialog({
-    title: 'Eliminar tarifa',
-    message: `¿Eliminar la tarifa de pago al guía de ${nombre}?`,
-    cancel: 'Cancelar',
-    persistent: true,
-  }).onOk(async () => {
-    try {
-      const { data } = await eliminarTarifa(fila._id);
-      $q.notify({ type: 'positive', message: data.message });
-      await cargarTarifas();
-    } catch {
-      // El interceptor de services/api.js ya notificó el error en español
-    }
+  const aceptar = await confirmar({
+    titulo: 'Eliminar tarifa',
+    texto: `¿Eliminar la tarifa de pago al guía de ${nombre}?`,
+    confirmar: 'Eliminar',
+    icono: 'warning',
   });
+  if (!aceptar) return;
+  try {
+    const { data } = await eliminarTarifa(fila._id);
+    exito(data.message);
+    await cargarTarifas();
+  } catch {
+    // El interceptor de services/api.js ya notificó el error en español
+  }
 }
 
 async function prepararPestanaTarifas() {
@@ -590,5 +590,12 @@ watch([filtroActividad, filtroUnidad], () => {
   cargarTarifas();
 });
 
-onMounted(cargar);
+const paginaEl = ref(null);
+
+onMounted(async () => {
+  animarEntrada(paginaEl.value?.$el || paginaEl.value);
+  await cargar();
+  await nextTick();
+  animarTabla(paginaEl.value?.$el || paginaEl.value);
+});
 </script>

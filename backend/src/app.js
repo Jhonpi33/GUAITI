@@ -1,4 +1,6 @@
 import express from 'express';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -7,10 +9,19 @@ import { noEncontrado, manejadorDeErrores } from './middlewares/errorHandler.js'
 
 const app = express();
 
+const RUTA_UPLOADS = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+  'uploads'
+);
+
 app.use(helmet());
 app.use(cors({ origin: process.env.CORS_ORIGIN || true }));
 app.use(express.json({ limit: '2mb' }));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+
+// Fotos guardadas localmente cuando no hay credenciales de Cloudinary
+app.use('/uploads', express.static(RUTA_UPLOADS));
 
 app.get('/', (_req, res) =>
   res.json({ ok: true, data: { servicio: 'Gua-iti API' }, message: 'API Gua-iti funcionando' })

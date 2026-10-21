@@ -1,8 +1,9 @@
 /* =========================================================================
-   Identidad visual Gua-iti Aventura Sin Límites
+   Identidad visual Gua-iti Aventura Sin Límites — tema claro tipo turismo
    --------------------------------------------------------------------------
-   Tomada del logo: letras blancas con borde negro, sol naranja y amarillo,
-   montañas verdes, río azul y subrayado magenta.
+   Tomada del logo: sol naranja y amarillo, montañas verdes, río azul y
+   subrayado magenta. Fondo claro natural (arena/clara), verde expedición
+   para acciones y naranja atardecer para resaltar.
 
    Este archivo se importa DESPUÉS de quasar/dist/quasar.css (ver src/main.js),
    por lo que sobrescribe las variables de color generadas por Quasar.
@@ -10,36 +11,96 @@
 
 :root {
   /* Colores de marca (variables Quasar: se cambian en un solo lugar) */
-  --q-primary: #12a04a; /* verde — acciones */
-  --q-secondary: #f39a1e; /* naranja — energía, resaltar */
-  --q-accent: #1bb4d8; /* azul río — datos y gráficas */
-  --q-warning: #f7e01b; /* amarillo — advertencias */
+  --q-primary: #0f8a45; /* verde expedición — acciones principales */
+  --q-secondary: #f07d1e; /* naranja atardecer — energía, resaltar */
+  --q-accent: #0e8fb5; /* azul río — datos y gráficas */
+  --q-warning: #f5b81d; /* amarillo sol — advertencias */
+  --q-positive: #1a9e4b;
+  --q-negative: #dc3d43;
   --magenta: #d0206e; /* detalles puntuales (uso moderado) */
 
-  /* Superficies oscuras (gris casi negro como base) */
-  --q-dark-page: #0f1319;
-  --q-dark: #161b23;
-  --guaiti-fondo: #0f1319;
-  --guaiti-tarjeta: #161b23;
-  --guaiti-tarjeta-borde: #242c38;
-  --guaiti-cabecera: #12161d;
-  --guaiti-texto: #e8edf3;
-  --guaiti-texto-suave: #9aa6b6;
+  /* Tonos derivados (texto sobre fondos claros/oscuros) */
+  --naranja-claro: #ffb84d; /* naranja legible sobre fondos oscuros */
+  --naranja-texto: #b5570a; /* naranja legible sobre fondos claros */
+  --verde-claro: #8fd6ac; /* verde legible sobre fondos oscuros */
+  --verde-texto: #0e6435; /* verde legible sobre fondos claros */
+
+  /* Superficies claras (base arena verdosa natural) */
+  --q-dark-page: #eef4ef;
+  --q-dark: #0b4730;
+  --guaiti-fondo: #eef4ef;
+  --guaiti-tarjeta: #ffffff;
+  --guaiti-tarjeta-borde: #e0e8e0;
+  --guaiti-cabecera: #0b4730;
+  --guaiti-texto: #16241c;
+  --guaiti-texto-suave: #5f7167;
+  --guaiti-sombra: 0 1px 3px rgba(16, 44, 30, 0.06), 0 10px 26px rgba(16, 44, 30, 0.07);
+  --guaiti-sombra-alta: 0 18px 44px rgba(16, 44, 30, 0.16);
 
   /* Tipografía */
-  --guaiti-fuente: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --guaiti-fuente: 'Inter Variable', 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --guaiti-fuente-titulo: 'Montserrat Variable', 'Montserrat', 'Inter Variable', sans-serif;
 
   /* Semáforo de mantenimiento */
-  --semaforo-verde: #12a04a;
-  --semaforo-amarillo: #f7e01b;
-  --semaforo-rojo: #e0353d;
+  --semaforo-verde: #1a9e4b;
+  --semaforo-amarillo: #f5b81d;
+  --semaforo-rojo: #dc3d43;
 }
 
-/* Fondo general */
-body.body--dark {
+/* Fondo general: claro con tenues resplandores de naturaleza */
+body {
   background-color: var(--guaiti-fondo);
+  background-image:
+    radial-gradient(900px 460px at 100% -140px, rgba(15, 138, 69, 0.1), transparent 70%),
+    radial-gradient(760px 400px at -140px 10%, rgba(240, 125, 30, 0.09), transparent 70%);
+  background-attachment: fixed;
   color: var(--guaiti-texto);
   font-family: var(--guaiti-fuente);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(15, 138, 69, 0.22);
+  color: var(--guaiti-texto);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Íconos: la clase .material-icons de la app usa la fuente round          */
+/* (más suave y moderna) sin cambiar ningún nombre de ícono en plantillas  */
+/* ---------------------------------------------------------------------- */
+
+.material-icons {
+  font-family: 'Material Icons Round';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+}
+
+/* Barras de desplazamiento discretas (tono natural) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #e6ede6;
+}
+::-webkit-scrollbar-thumb {
+  background: #b9c7bb;
+  border-radius: 6px;
+  border: 2px solid #e6ede6;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9db1a2;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -47,7 +108,7 @@ body.body--dark {
 /* ---------------------------------------------------------------------- */
 
 .pagina-listado .text-h5 {
-  color: #ffffff;
+  color: var(--guaiti-texto);
   font-weight: 800;
   font-size: 1.6rem;
   letter-spacing: 0.03em;
@@ -57,7 +118,7 @@ body.body--dark {
   padding-bottom: 10px;
 }
 
-/* Subrayado del logo: verde con cierre en magenta */
+/* Subrayado de marca: verde con cierre en naranja atardecer */
 .pagina-listado .text-h5::after {
   content: '';
   position: absolute;
@@ -66,11 +127,11 @@ body.body--dark {
   width: 64px;
   height: 4px;
   border-radius: 2px;
-  background: linear-gradient(90deg, var(--q-primary) 0 70%, var(--magenta) 70% 100%);
+  background: linear-gradient(90deg, var(--q-primary) 0 70%, var(--q-secondary) 70% 100%);
 }
 
 .pagina-listado .text-h6 {
-  color: #eef2f7;
+  color: var(--guaiti-texto);
   font-weight: 700;
   font-size: 1rem;
   letter-spacing: 0.06em;
@@ -96,8 +157,8 @@ body.body--dark {
 .tarjeta-tabla {
   background-color: var(--guaiti-tarjeta);
   border-color: var(--guaiti-tarjeta-borde);
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  border-radius: 14px;
+  box-shadow: var(--guaiti-sombra);
 }
 
 .tarjeta-tabla .q-card__section {
@@ -111,18 +172,18 @@ body.body--dark {
   border-color: var(--guaiti-tarjeta-borde);
 }
 
-/* Encabezado de columnas: mayúsculas y acento verde */
+/* Encabezado de columnas: mayúsculas y acento verde expedición */
 .tarjeta-tabla .q-table thead tr {
-  background-color: #12171f;
+  background-color: #eaf3ec;
 }
 
 .tarjeta-tabla .q-table th {
-  color: #cfd8e3 !important;
+  color: #0b5233 !important;
   font-weight: 700 !important;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  border-bottom: 2px solid rgba(18, 160, 74, 0.55) !important;
+  border-bottom: 2px solid rgba(15, 138, 69, 0.45) !important;
 }
 
 .tarjeta-tabla .q-table td {
@@ -130,8 +191,12 @@ body.body--dark {
   border-color: var(--guaiti-tarjeta-borde);
 }
 
+.tarjeta-tabla .q-table tbody tr:nth-child(even) {
+  background-color: #f7faf7;
+}
+
 .tarjeta-tabla .q-table tbody tr:hover {
-  background-color: rgba(18, 160, 74, 0.07);
+  background-color: rgba(15, 138, 69, 0.08);
 }
 
 .tabla-inferior .q-btn {
@@ -147,16 +212,17 @@ body.body--dark {
 /* Cabecera y cajón de menú                                                */
 /* ---------------------------------------------------------------------- */
 
+/* Cabecera: bosque profundo con filo naranja (sol) */
 .cabecera-app {
-  background-color: var(--guaiti-cabecera);
-  border-bottom: 2px solid var(--q-primary);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  background: linear-gradient(180deg, #0d5a3c 0%, #0a4630 100%);
+  border-bottom: 3px solid var(--q-secondary);
+  box-shadow: 0 3px 14px rgba(10, 46, 30, 0.28);
 }
 
 .logo-cabecera {
   width: 34px;
   height: auto;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
 }
 
 .titulo-cabecera {
@@ -164,7 +230,17 @@ body.body--dark {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   font-weight: 700;
-  color: #f2f5f9;
+  color: #ffffff;
+}
+
+/* "Gua-iti" dentro de la cabecera: naranja sol legible sobre verde oscuro */
+.marca-cabecera {
+  color: var(--naranja-claro);
+}
+
+/* Rol del usuario bajo el nombre */
+.rol-cabecera {
+  color: var(--verde-claro);
 }
 
 .fondo-cajon {
@@ -178,6 +254,7 @@ body.body--dark {
   gap: 12px;
   padding: 18px 16px 14px;
   border-bottom: 1px solid var(--guaiti-tarjeta-borde);
+  background: linear-gradient(135deg, rgba(15, 138, 69, 0.07), rgba(240, 125, 30, 0.06));
 }
 
 .marca-cajon img {
@@ -186,7 +263,7 @@ body.body--dark {
 }
 
 .marca-cajon .marca-nombre {
-  color: #fff;
+  color: var(--guaiti-texto);
   font-weight: 800;
   font-size: 0.95rem;
   letter-spacing: 0.06em;
@@ -195,29 +272,41 @@ body.body--dark {
 }
 
 .marca-cajon .marca-lema {
-  color: var(--q-secondary);
+  color: var(--naranja-texto);
   font-size: 0.68rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  font-weight: 700;
 }
 
 /* Ítems del menú */
 .q-list .q-item {
-  color: #c3ccd9;
+  color: #43544a;
   font-weight: 600;
   letter-spacing: 0.02em;
-  border-radius: 8px;
+  border-radius: 10px;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .q-list .q-item__section--avatar .q-icon {
-  color: var(--q-secondary);
+  color: var(--naranja-texto);
+}
+
+.q-list .q-item:hover {
+  background-color: rgba(240, 125, 30, 0.1);
+  color: var(--guaiti-texto);
 }
 
 .q-item.q-router-link--active,
 .q-item--active {
-  color: #ffffff !important;
-  background-color: rgba(18, 160, 74, 0.18);
+  color: #0b5233 !important;
+  background-color: rgba(15, 138, 69, 0.14);
   box-shadow: inset 3px 0 0 0 var(--q-primary);
+}
+
+.q-item.q-router-link--active .q-icon,
+.q-item--active .q-icon {
+  color: var(--q-primary) !important;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -227,10 +316,29 @@ body.body--dark {
 .q-btn {
   letter-spacing: 0.03em;
   font-weight: 600;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
 }
 
-.q-btn--unelevated.q-btn--primary {
-  box-shadow: 0 2px 8px rgba(18, 160, 74, 0.35);
+.q-btn--unelevated.bg-primary {
+  box-shadow: 0 4px 14px rgba(15, 138, 69, 0.32);
+}
+
+.q-btn--unelevated.bg-primary:hover {
+  box-shadow: 0 6px 18px rgba(15, 138, 69, 0.4);
+  filter: brightness(1.06);
+}
+
+.q-btn--unelevated.bg-secondary {
+  box-shadow: 0 4px 14px rgba(240, 125, 30, 0.32);
+}
+
+.q-btn--unelevated.bg-secondary:hover {
+  box-shadow: 0 6px 18px rgba(240, 125, 30, 0.4);
+  filter: brightness(1.06);
+}
+
+.q-btn:active {
+  transform: translateY(1px);
 }
 
 /* ---------------------------------------------------------------------- */
@@ -248,27 +356,46 @@ body.body--dark {
 /* Hero de la página de inicio                                             */
 /* ---------------------------------------------------------------------- */
 
+/* Tarjeta inspirada en un mapa topográfico: patrón de líneas de sendero */
 .hero-inicio {
   position: relative;
   overflow: hidden;
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1px solid var(--guaiti-tarjeta-borde);
   background:
-    radial-gradient(circle at 12% 20%, rgba(18, 160, 74, 0.28), transparent 55%),
-    radial-gradient(circle at 88% 78%, rgba(243, 154, 30, 0.18), transparent 55%),
-    linear-gradient(135deg, #141a22 0%, #10151c 100%);
+    radial-gradient(circle at 12% 20%, rgba(15, 138, 69, 0.14), transparent 55%),
+    radial-gradient(circle at 88% 78%, rgba(240, 125, 30, 0.14), transparent 55%),
+    linear-gradient(135deg, #ffffff 0%, #f5faf5 100%);
+  box-shadow: var(--guaiti-sombra);
   padding: 26px 28px;
   margin-bottom: 20px;
+}
+
+.hero-inicio::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(11, 71, 48, 0.04) 0 2px,
+    transparent 2px 26px
+  );
+  pointer-events: none;
+}
+
+.hero-inicio > * {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-inicio .hero-logo {
   width: 132px;
   height: auto;
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 6px 14px rgba(16, 44, 30, 0.28));
 }
 
 .hero-inicio .hero-titulo {
-  color: #fff;
+  color: var(--guaiti-texto);
   font-weight: 800;
   font-size: 1.5rem;
   letter-spacing: 0.05em;
@@ -277,8 +404,8 @@ body.body--dark {
 }
 
 .hero-inicio .hero-subtitulo {
-  color: var(--q-secondary);
-  font-weight: 600;
+  color: var(--naranja-texto);
+  font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-size: 0.72rem;
@@ -290,15 +417,15 @@ body.body--dark {
   height: 4px;
   border-radius: 2px;
   margin-top: 12px;
-  background: linear-gradient(90deg, var(--q-primary) 0 60%, var(--magenta) 60% 100%);
+  background: linear-gradient(90deg, var(--q-primary) 0 60%, var(--q-secondary) 60% 100%);
 }
 
 /* Tarjeta de actividad (página de inicio) */
 .actividad-foto {
   height: 132px;
-  border-radius: 12px 12px 0 0;
+  border-radius: 14px 14px 0 0;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(18, 160, 74, 0.35), rgba(27, 180, 216, 0.22));
+  background: linear-gradient(135deg, rgba(15, 138, 69, 0.85), rgba(14, 143, 181, 0.75));
 }
 
 .actividad-foto img {
@@ -306,6 +433,11 @@ body.body--dark {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.3s ease;
+}
+
+.q-card:hover .actividad-foto img {
+  transform: scale(1.04);
 }
 
 .actividad-foto-placeholder {
@@ -313,7 +445,7 @@ body.body--dark {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .actividad-nombre {
@@ -321,11 +453,11 @@ body.body--dark {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   font-size: 0.86rem;
-  color: #ffffff;
+  color: var(--guaiti-texto);
 }
 
 .actividad-precio {
-  color: var(--q-secondary);
+  color: var(--naranja-texto);
   font-weight: 800;
   font-size: 1.35rem;
 }
@@ -335,65 +467,389 @@ body.body--dark {
   background-color: var(--guaiti-tarjeta);
   border: 1px solid var(--guaiti-tarjeta-borde);
   border-left: 4px solid var(--q-primary);
-  border-radius: 12px;
+  border-radius: 14px;
+  box-shadow: var(--guaiti-sombra);
   height: 100%;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tarjeta-kpi:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--guaiti-sombra-alta);
 }
 
 .tarjeta-kpi .kpi-valor {
-  color: #ffffff;
+  color: var(--guaiti-texto);
   font-size: 2rem;
   font-weight: 800;
   line-height: 1.1;
 }
 
 .tarjeta-kpi .kpi-etiqueta {
+  color: var(--verde-texto);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.tarjeta-kpi .kpi-detalle {
+  color: var(--guaiti-texto-suave);
+  font-size: 0.78rem;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Login — pantalla partida: marca (degradado) + formulario blanco          */
+/* ---------------------------------------------------------------------- */
+
+.login-partido {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(320px, 46%) 1fr;
+  background: var(--guaiti-fondo);
+}
+
+/* Panel izquierdo: degradado verde → naranja con patrón geométrico */
+.login-marca {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 44px 30px;
+  text-align: center;
+  background: linear-gradient(150deg, #16b45c 0%, #0f8a45 44%, #f07d1e 100%);
+  color: #ffffff;
+}
+
+.login-marca::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.07) 0 3px, transparent 3px 30px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.05) 0 3px, transparent 3px 30px),
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.18) 0 46px, transparent 47px),
+    radial-gradient(circle at 84% 78%, rgba(208, 32, 110, 0.24) 0 64px, transparent 65px),
+    radial-gradient(circle at 76% 16%, rgba(247, 224, 27, 0.22) 0 34px, transparent 35px);
+  pointer-events: none;
+}
+
+.login-marca > * {
+  position: relative;
+  z-index: 1;
+}
+
+.login-marca-logo {
+  width: 172px;
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32));
+}
+
+.login-marca-nombre {
+  font-size: 2.3rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.05;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+}
+
+.login-marca-lema {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.login-marca-raya {
+  width: 120px;
+  height: 5px;
+  border-radius: 3px;
+  margin: 6px 0 2px;
+  background: linear-gradient(90deg, #ffffff 0 68%, var(--magenta) 68% 100%);
+}
+
+.login-marca-lugar {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 999px;
+  padding: 6px 16px;
+  background: rgba(0, 0, 0, 0.14);
+}
+
+/* Panel derecho: fondo natural con tarjeta de formulario */
+.login-formulario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 26px;
+  background: var(--guaiti-fondo);
+}
+
+.login-tarjeta {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  border: 1px solid var(--guaiti-tarjeta-borde);
+  border-radius: 16px;
+  padding: 34px 28px 28px;
+  box-shadow: var(--guaiti-sombra-alta);
+  color: var(--guaiti-texto);
+}
+
+/* Filo de marca en la parte superior (sin romper el radio) */
+.login-tarjeta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--q-primary) 0 62%, var(--q-secondary) 62% 100%);
+}
+
+.login-titulo {
+  color: var(--guaiti-texto);
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.login-subtitulo {
+  color: var(--guaiti-texto-suave);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+.login-sitio {
   color: var(--guaiti-texto-suave);
   font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.login-campo .q-field__label {
+  color: var(--guaiti-texto-suave) !important;
+}
+
+.login-campo .q-field__control {
+  color: var(--guaiti-texto) !important;
+}
+
+.login-campo .q-field__native,
+.login-campo .q-field__input {
+  color: var(--guaiti-texto) !important;
+}
+
+.login-campo .q-field__control-container::after {
+  background: var(--q-primary);
+}
+
+.login-campo .q-field__control::before {
+  border-bottom: 1px solid #c7d2c8 !important;
+  opacity: 1;
+}
+
+.login-campo .q-field__prepend,
+.login-campo .q-field__append {
+  color: var(--q-primary) !important;
+}
+
+.login-boton-ingresar {
+  height: 50px;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 800;
+  border-radius: 10px;
+}
+
+@media (max-width: 900px) {
+  .login-partido {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .login-marca {
+    gap: 6px;
+    padding: 26px 20px 24px;
+  }
+
+  .login-marca-logo {
+    width: 96px;
+  }
+
+  .login-marca-nombre {
+    font-size: 1.4rem;
+  }
+
+  .login-marca-lema {
+    font-size: 0.64rem;
+    letter-spacing: 0.24em;
+  }
+
+  .login-marca-raya {
+    margin: 2px 0;
+  }
+
+  .login-formulario {
+    align-items: flex-start;
+    padding: 22px 16px 34px;
+  }
+
+  .login-tarjeta {
+    max-width: 480px;
+    padding: 28px 20px 22px;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Alertas SweetAlert2 (tema claro Gua-iti)                                */
+/* ---------------------------------------------------------------------- */
+
+.swal2-container.swal2-center > .alerta-guaiti {
+  border: 1px solid var(--guaiti-tarjeta-borde);
+}
+
+.alerta-guaiti {
+  background-color: #ffffff !important;
+  border: 1px solid var(--guaiti-tarjeta-borde);
+  border-radius: 16px;
+  font-family: var(--guaiti-fuente);
+  box-shadow: var(--guaiti-sombra-alta);
+}
+
+.alerta-guaiti .swal2-title {
+  color: var(--guaiti-texto) !important;
+  font-family: var(--guaiti-fuente);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.alerta-guaiti .swal2-html-container {
+  color: var(--guaiti-texto-suave) !important;
+  font-family: var(--guaiti-fuente);
+  font-size: 0.92rem;
+}
+
+.alerta-guaiti .swal2-icon {
+  border-color: rgba(15, 138, 69, 0.3);
+}
+
+.alerta-boton {
+  border-radius: 10px;
+  font-family: var(--guaiti-fuente);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.2rem;
+  margin: 0 4px;
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.alerta-boton:hover {
+  filter: brightness(1.08);
+}
+
+.alerta-boton-confirmar {
+  background-color: var(--q-primary) !important;
+  color: #ffffff !important;
+  border: 1px solid var(--q-primary);
+  box-shadow: 0 4px 14px rgba(15, 138, 69, 0.3);
+}
+
+.alerta-boton-cancelar {
+  background-color: transparent !important;
+  color: var(--guaiti-texto-suave) !important;
+  border: 1px solid var(--guaiti-tarjeta-borde);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Transición de página (router-view en PanelLayout)                       */
+/* ---------------------------------------------------------------------- */
+
+.pagina-enter-active,
+.pagina-leave-active {
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.pagina-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.pagina-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Panel del guía (mobile-first)                                           */
+/* ---------------------------------------------------------------------- */
+
+.panel-resumen {
+  background-color: var(--guaiti-tarjeta);
+  border: 1px solid var(--guaiti-tarjeta-borde);
+  border-left: 4px solid var(--q-secondary);
+  border-radius: 14px;
+  box-shadow: var(--guaiti-sombra);
+  padding: 14px 16px;
+}
+
+.panel-resumen .kpi-valor {
+  color: var(--guaiti-texto);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.panel-resumen .kpi-etiqueta {
+  color: var(--guaiti-texto-suave);
+  font-size: 0.66rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 700;
 }
 
-.tarjeta-kpi .kpi-detalle {
-  color: #6f7c8d;
-  font-size: 0.78rem;
+.boton-salida-grande {
+  min-height: 62px;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 800;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(15, 138, 69, 0.38);
 }
 
-/* ---------------------------------------------------------------------- */
-/* Login                                                                   */
-/* ---------------------------------------------------------------------- */
-
-.login-fondo {
-  min-height: 100vh;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(18, 160, 74, 0.2), transparent 55%),
-    radial-gradient(circle at 80% 80%, rgba(243, 154, 30, 0.14), transparent 55%),
-    radial-gradient(circle at 60% 10%, rgba(208, 32, 110, 0.1), transparent 45%),
-    var(--guaiti-fondo);
-}
-
-.login-tarjeta {
-  width: 100%;
-  max-width: 400px;
-  background-color: rgba(22, 27, 35, 0.92);
+.tarjeta-salida {
+  background-color: var(--guaiti-tarjeta);
   border: 1px solid var(--guaiti-tarjeta-borde);
-  border-radius: 16px;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
+  border-radius: 14px;
+  box-shadow: var(--guaiti-sombra);
 }
 
-.login-logo {
-  width: 168px;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.6));
-}
-
-.login-titulo {
-  color: #fff;
+.tarjeta-salida .salida-titulo {
+  color: var(--guaiti-texto);
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  font-size: 0.9rem;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -404,14 +860,14 @@ body.body--dark {
   background-color: var(--guaiti-tarjeta);
   color: var(--guaiti-texto);
   border: 1px solid var(--guaiti-tarjeta-borde);
-  border-radius: 14px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  border-radius: 16px;
+  box-shadow: var(--guaiti-sombra-alta);
 }
 
 .q-dialog .q-card__section.text-h6 {
   border-bottom: 1px solid var(--guaiti-tarjeta-borde);
   padding-bottom: 12px;
-  color: #ffffff;
+  color: var(--guaiti-texto);
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: 0.06em;
@@ -419,6 +875,13 @@ body.body--dark {
 }
 
 /* Cabecera compacta en pantallas pequeñas */
+.titulo-cabecera {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
 @media (max-width: 600px) {
   .titulo-cabecera {
     font-size: 0.75rem;
@@ -426,6 +889,13 @@ body.body--dark {
   }
   .logo-cabecera {
     width: 28px;
+  }
+}
+
+/* En celulares pequeños solo queda la marca en la cabecera */
+@media (max-width: 480px) {
+  .titulo-cabecera-resto {
+    display: none;
   }
 }
 
@@ -443,4 +913,66 @@ body.body--dark {
 
 .texto-suave {
   color: var(--guaiti-texto-suave);
+}
+
+/* Miniaturas de fotos (reportes de daño y soportes de gastos) */
+.foto-miniatura {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--guaiti-tarjeta-borde);
+  box-shadow: 0 2px 8px rgba(16, 44, 30, 0.12);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Tipografía display: Montserrat en títulos y cifras (Inter en el resto)  */
+/* ---------------------------------------------------------------------- */
+
+.pagina-listado .text-h5,
+.pagina-listado .text-h6,
+.titulo-cabecera,
+.marca-cabecera,
+.marca-cajon .marca-nombre,
+.marca-cajon .marca-lema,
+.hero-inicio .hero-titulo,
+.actividad-nombre,
+.actividad-precio,
+.tarjeta-kpi .kpi-valor,
+.tarjeta-kpi .kpi-etiqueta,
+.panel-resumen .kpi-valor,
+.panel-resumen .kpi-etiqueta,
+.tarjeta-salida .salida-titulo,
+.login-titulo,
+.login-marca-nombre,
+.login-marca-lema,
+.alerta-guaiti .swal2-title,
+.q-dialog .q-card__section.text-h6 {
+  font-family: var(--guaiti-fuente-titulo);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Decoración: cordillera en el hero (toque naturaleza/expedición)         */
+/* ---------------------------------------------------------------------- */
+
+.hero-inicio::after {
+  content: '';
+  position: absolute;
+  right: -30px;
+  bottom: -14px;
+  width: 42%;
+  min-width: 320px;
+  height: 150px;
+  background: linear-gradient(180deg, rgba(14, 143, 181, 0.55) 0%, rgba(15, 138, 69, 0.65) 100%);
+  clip-path: polygon(0 100%, 18% 42%, 33% 74%, 52% 22%, 70% 62%, 84% 34%, 100% 100%);
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .hero-inicio::after {
+    width: 70%;
+    height: 110px;
+    opacity: 0.14;
+  }
 }

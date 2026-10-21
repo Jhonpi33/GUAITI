@@ -44,12 +44,12 @@ cd backend
 cp .env.example .env      # completa MONGODB_URI, JWT_SECRET y los datos del admin
 npm install
 npm run seed              # crea admin + guías + actividades + motos + parámetros + tarifas
-npm run dev               # http://localhost:4000
+npm run dev               # http://localhost:4100
 
 # 2. Frontend (otra terminal)
 cd frontend
 npm install
-npm run dev               # http://localhost:5173
+npm run dev               # http://localhost:5175
 ```
 
 ### Usuarios de prueba

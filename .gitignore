@@ -13,6 +13,9 @@ atlas-credentials.env
 frontend/dist/
 backend/dist/
 
+# Fotos subidas en modo local (sin Cloudinary)
+backend/uploads/
+
 # Logs
 *.log
 npm-debug.log*

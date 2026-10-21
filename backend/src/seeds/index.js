@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { conectarDB, desconectarDB } from '../config/db.js';
 import { seedAdmin } from './seedAdmin.js';
+import { seedCascos } from './seedCascos.js';
 import Guia from '../models/Guia.js';
 import Actividad from '../models/Actividad.js';
 import Moto from '../models/Moto.js';
@@ -135,6 +136,7 @@ async function main() {
   await conectarDB();
   await seedAdmin();
   await seedDatos();
+  await seedCascos(1, 60);
   await desconectarDB();
   console.log('[seed] Semilla completada.');
   process.exit(0);

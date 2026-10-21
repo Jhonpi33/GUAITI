@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="pagina-listado q-pa-md">
+  <q-page ref="paginaEl" padding class="pagina-listado q-pa-md">
     <div class="row items-center q-mb-md">
       <div class="text-h5">Usuarios</div>
       <q-space />
@@ -161,14 +161,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useQuasar } from 'quasar';
+import { ref, onMounted, nextTick } from 'vue';
+import { animarEntrada, animarTabla } from '../utils/animaciones';
 import { useAuthStore } from '../stores/auth';
 import { useListado } from '../composables/useListado';
 import { listarUsuarios, crearUsuario, actualizarUsuario, cambiarActivoUsuario } from '../services/usuarios';
+import { exito, confirmar } from '../services/alertas';
 import { reglas } from '../utils/validaciones';
 
-const $q = useQuasar();
 const auth = useAuthStore();
 
 const { busqueda, items, total, pagina, paginas, cargando, cargar, irPagina } = useListado(listarUsuarios);
@@ -234,7 +234,7 @@ async function guardar() {
         rol: registro.value.rol,
       });
     }
-    $q.notify({ type: 'positive', message: respuesta.data.message });
+    exito(respuesta.data.message);
     dialogo.value = false;
     await cargar();
   } catch {
@@ -244,22 +244,28 @@ async function guardar() {
   }
 }
 
-function cambiarActivo(fila) {
-  $q.dialog({
-    title: fila.activo ? 'Desactivar usuario' : 'Activar usuario',
-    message: `¿${fila.activo ? 'Desactivar' : 'Activar'} el usuario ${fila.nombre}?`,
-    cancel: 'Cancelar',
-    persistent: true,
-  }).onOk(async () => {
-    try {
-      const { data } = await cambiarActivoUsuario(fila._id, !fila.activo);
-      $q.notify({ type: 'positive', message: data.message });
-      await cargar();
-    } catch {
-      // El interceptor de services/api.js ya notificó el error en español
-    }
+async function cambiarActivo(fila) {
+  const aceptar = await confirmar({
+    titulo: fila.activo ? 'Desactivar usuario' : 'Activar usuario',
+    texto: `¿${fila.activo ? 'Desactivar' : 'Activar'} el usuario ${fila.nombre}?`,
+    confirmar: fila.activo ? 'Desactivar' : 'Activar',
   });
+  if (!aceptar) return;
+  try {
+    const { data } = await cambiarActivoUsuario(fila._id, !fila.activo);
+    exito(data.message);
+    await cargar();
+  } catch {
+    // El interceptor de services/api.js ya notificó el error en español
+  }
 }
 
-onMounted(cargar);
+const paginaEl = ref(null);
+
+onMounted(async () => {
+  animarEntrada(paginaEl.value?.$el || paginaEl.value);
+  await cargar();
+  await nextTick();
+  animarTabla(paginaEl.value?.$el || paginaEl.value);
+});
 </script>

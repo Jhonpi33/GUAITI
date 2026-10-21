@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="pagina-listado q-pa-md">
+  <q-page ref="paginaEl" padding class="pagina-listado q-pa-md">
     <div class="row items-center q-mb-md">
       <div class="text-h5">Clientes</div>
       <q-space />
@@ -132,13 +132,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useQuasar } from 'quasar';
+import { ref, onMounted, nextTick } from 'vue';
+import { animarEntrada, animarTabla } from '../utils/animaciones';
 import { useListado } from '../composables/useListado';
 import { listarClientes, crearCliente, actualizarCliente, eliminarCliente } from '../services/clientes';
+import { exito, confirmar } from '../services/alertas';
 import { reglas } from '../utils/validaciones';
-
-const $q = useQuasar();
 
 const { busqueda, items, total, pagina, paginas, cargando, cargar, irPagina } = useListado(listarClientes);
 
@@ -183,7 +182,7 @@ async function guardar() {
     const respuesta = editando.value
       ? await actualizarCliente(registro.value._id, datos)
       : await crearCliente(datos);
-    $q.notify({ type: 'positive', message: respuesta.data.message });
+    exito(respuesta.data.message);
     dialogo.value = false;
     await cargar();
   } catch {
@@ -193,22 +192,29 @@ async function guardar() {
   }
 }
 
-function confirmarEliminacion(fila) {
-  $q.dialog({
-    title: 'Eliminar cliente',
-    message: `¿Eliminar el cliente ${fila.nombre}?`,
-    cancel: 'Cancelar',
-    persistent: true,
-  }).onOk(async () => {
-    try {
-      const { data } = await eliminarCliente(fila._id);
-      $q.notify({ type: 'positive', message: data.message });
-      await cargar();
-    } catch {
-      // El interceptor de services/api.js ya notificó el error en español
-    }
+async function confirmarEliminacion(fila) {
+  const aceptar = await confirmar({
+    titulo: 'Eliminar cliente',
+    texto: `¿Eliminar el cliente ${fila.nombre}?`,
+    confirmar: 'Eliminar',
+    icono: 'warning',
   });
+  if (!aceptar) return;
+  try {
+    const { data } = await eliminarCliente(fila._id);
+    exito(data.message);
+    await cargar();
+  } catch {
+    // El interceptor de services/api.js ya notificó el error en español
+  }
 }
 
-onMounted(cargar);
+const paginaEl = ref(null);
+
+onMounted(async () => {
+  animarEntrada(paginaEl.value?.$el || paginaEl.value);
+  await cargar();
+  await nextTick();
+  animarTabla(paginaEl.value?.$el || paginaEl.value);
+});
 </script>

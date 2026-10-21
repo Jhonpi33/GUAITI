@@ -1,6 +1,6 @@
 <template>
-  <q-page padding class="pagina-listado q-pa-md">
-    <div class="hero-inicio row items-center q-col-gutter-md">
+  <q-page ref="pagina" padding class="pagina-listado q-pa-md">
+    <div class="hero-inicio row items-center q-col-gutter-md" data-anim>
       <div class="col-12 col-sm-auto">
         <img :src="logo" alt="Logo Gua-iti" class="hero-logo" />
       </div>
@@ -23,7 +23,7 @@
     </div>
 
     <div class="row q-col-gutter-md q-mb-md">
-      <div v-for="tarjeta in tarjetas" :key="tarjeta.titulo" class="col-12 col-sm-6 col-md-3">
+      <div v-for="tarjeta in tarjetas" :key="tarjeta.titulo" class="col-12 col-sm-6 col-md-3" data-anim>
         <div class="tarjeta-kpi q-pa-md">
           <div class="kpi-etiqueta">{{ tarjeta.titulo }}</div>
           <div class="kpi-valor q-mt-sm">
@@ -44,6 +44,7 @@
             v-for="actividad in actividades"
             :key="actividad._id"
             class="col-12 col-sm-6 col-md-4"
+            data-fila
           >
             <q-card flat bordered class="tarjeta-tabla detalle-activo full-height">
               <div class="actividad-foto">
@@ -76,7 +77,7 @@
             </q-card>
           </div>
 
-          <div v-if="!actividades.length && !cargando" class="col-12 text-grey-5">
+          <div v-if="!actividades.length && !cargando" class="col-12 texto-suave">
             No hay actividades registradas.
           </div>
         </div>
@@ -90,16 +91,19 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, nextTick } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import { listarGuias } from '../services/guias';
 import { listarClientes } from '../services/clientes';
 import { listarMotos } from '../services/motos';
 import { listarActividades } from '../services/actividades';
+import { animarEntrada, animarTabla } from '../utils/animaciones';
 import { formatoCop, formatoDuracion } from '../utils/formato';
 import logo from '../assets/logo.png';
 
 const auth = useAuthStore();
+
+const pagina = ref(null);
 
 const cargando = ref(false);
 const totalGuias = ref(0);
@@ -164,8 +168,13 @@ async function cargar() {
     // El interceptor de services/api.js ya notificó el error en español
   } finally {
     cargando.value = false;
+    await nextTick();
+    animarTabla(pagina.value?.$el || pagina.value);
   }
 }
 
-onMounted(cargar);
+onMounted(async () => {
+  animarEntrada(pagina.value?.$el || pagina.value);
+  await cargar();
+});
 </script>

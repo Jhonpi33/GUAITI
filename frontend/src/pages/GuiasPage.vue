@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="pagina-listado q-pa-md">
+  <q-page ref="paginaEl" padding class="pagina-listado q-pa-md">
     <div class="row items-center q-mb-md">
       <div class="text-h5">Guías</div>
       <q-space />
@@ -172,13 +172,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useQuasar } from 'quasar';
+import { ref, onMounted, nextTick } from 'vue';
+import { animarEntrada, animarTabla } from '../utils/animaciones';
 import { useListado } from '../composables/useListado';
 import { listarGuias, crearGuia, actualizarGuia, desactivarGuia } from '../services/guias';
+import { exito, confirmar } from '../services/alertas';
 import { reglas } from '../utils/validaciones';
-
-const $q = useQuasar();
 
 const { busqueda, items, total, pagina, paginas, cargando, cargar, irPagina } = useListado(listarGuias);
 
@@ -247,7 +246,7 @@ async function guardar() {
         password: conUsuario ? registro.value.password : PASSWORD_SIN_USUARIO,
       });
     }
-    $q.notify({ type: 'positive', message: respuesta.data.message });
+    exito(respuesta.data.message);
     dialogo.value = false;
     await cargar();
   } catch {
@@ -257,22 +256,28 @@ async function guardar() {
   }
 }
 
-function confirmarDesactivar(fila) {
-  $q.dialog({
-    title: 'Desactivar guía',
-    message: `¿Desactivar el guía ${fila.nombre}?`,
-    cancel: 'Cancelar',
-    persistent: true,
-  }).onOk(async () => {
-    try {
-      const { data } = await desactivarGuia(fila._id);
-      $q.notify({ type: 'positive', message: data.message });
-      await cargar();
-    } catch {
-      // El interceptor de services/api.js ya notificó el error en español
-    }
+async function confirmarDesactivar(fila) {
+  const aceptar = await confirmar({
+    titulo: 'Desactivar guía',
+    texto: `¿Desactivar el guía ${fila.nombre}?`,
+    confirmar: 'Desactivar',
   });
+  if (!aceptar) return;
+  try {
+    const { data } = await desactivarGuia(fila._id);
+    exito(data.message);
+    await cargar();
+  } catch {
+    // El interceptor de services/api.js ya notificó el error en español
+  }
 }
 
-onMounted(cargar);
+const paginaEl = ref(null);
+
+onMounted(async () => {
+  animarEntrada(paginaEl.value?.$el || paginaEl.value);
+  await cargar();
+  await nextTick();
+  animarTabla(paginaEl.value?.$el || paginaEl.value);
+});
 </script>

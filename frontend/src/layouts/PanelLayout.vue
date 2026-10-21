@@ -14,13 +14,15 @@
         <q-toolbar-title class="text-weight-medium row items-center no-wrap">
           <img :src="logo" alt="Gua-iti" class="logo-cabecera q-mr-sm" />
           <span class="titulo-cabecera">
-            <span class="text-primary">Gua-iti</span> Aventura Sin Límites
+            <span class="marca-cabecera">Gua-iti</span><span class="titulo-cabecera-resto">
+              Aventura Sin Límites</span
+            >
           </span>
         </q-toolbar-title>
 
         <div class="column items-end no-wrap q-mr-sm gt-sm">
-          <span class="text-caption text-grey-4">{{ auth.usuario?.nombre }}</span>
-          <span class="text-overline text-primary" style="line-height: 1">{{ auth.nombreRol }}</span>
+          <span class="text-caption text-grey-3">{{ auth.usuario?.nombre }}</span>
+          <span class="text-overline rol-cabecera" style="line-height: 1">{{ auth.nombreRol }}</span>
         </div>
 
         <q-btn flat dense icon="logout" label="Cerrar sesión" no-caps @click="salir" />
@@ -55,7 +57,11 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition name="pagina" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </q-page-container>
   </q-layout>
 </template>
@@ -75,17 +81,41 @@ function cerrarCajonMovil() {
   if (window.innerWidth < 768) esquemaAbierto.value = false;
 }
 
-const menu = [
-  { to: '/inicio', etiqueta: 'Inicio', icono: 'home', roles: ['admin', 'secretario', 'guia'] },
-  { to: '/usuarios', etiqueta: 'Usuarios', icono: 'manage_accounts', roles: ['admin'] },
-  { to: '/guias', etiqueta: 'Guías', icono: 'groups', roles: ['admin', 'secretario'] },
-  { to: '/clientes', etiqueta: 'Clientes', icono: 'badge', roles: ['admin', 'secretario'] },
-  { to: '/actividades', etiqueta: 'Actividades', icono: 'assignment', roles: ['admin', 'secretario', 'guia'] },
-  { to: '/motos', etiqueta: 'Motos', icono: 'motorcycle', roles: ['admin', 'secretario', 'guia'] },
-  { to: '/configuracion', etiqueta: 'Configuración', icono: 'settings', roles: ['admin', 'secretario'] },
+/* Menú del rol de campo: el guía trabaja desde su panel */
+const menuGuia = [
+  { to: '/panel', etiqueta: 'Panel', icono: 'dashboard' },
+  { to: '/salidas', etiqueta: 'Salidas', icono: 'route' },
+  { to: '/adelantos', etiqueta: 'Adelantos', icono: 'payments' },
+  { to: '/bitacora', etiqueta: 'Bitácora', icono: 'fact_check' },
+  { to: '/danos', etiqueta: 'Daños', icono: 'build' },
+  { to: '/gastos', etiqueta: 'Gastos', icono: 'receipt_long' },
+  { to: '/liquidaciones', etiqueta: 'Liquidaciones', icono: 'request_quote' },
+  { to: '/actividades', etiqueta: 'Actividades', icono: 'assignment' },
+  { to: '/motos', etiqueta: 'Motos', icono: 'motorcycle' },
 ];
 
-const menuVisible = computed(() => menu.filter((item) => item.roles.includes(auth.rol)));
+/* Menú administrativo: lo de siempre más las pantallas de campo */
+const menuAdmin = [
+  { to: '/inicio', etiqueta: 'Inicio', icono: 'home' },
+  { to: '/usuarios', etiqueta: 'Usuarios', icono: 'manage_accounts', soloAdmin: true },
+  { to: '/guias', etiqueta: 'Guías', icono: 'groups' },
+  { to: '/clientes', etiqueta: 'Clientes', icono: 'badge' },
+  { to: '/actividades', etiqueta: 'Actividades', icono: 'assignment' },
+  { to: '/motos', etiqueta: 'Motos', icono: 'motorcycle' },
+  { to: '/cascos', etiqueta: 'Cascos', icono: 'sports_motorsports', soloAdmin: true },
+  { to: '/configuracion', etiqueta: 'Configuración', icono: 'settings' },
+  { to: '/salidas', etiqueta: 'Salidas', icono: 'route' },
+  { to: '/bitacora', etiqueta: 'Bitácora', icono: 'fact_check' },
+  { to: '/danos', etiqueta: 'Daños', icono: 'build' },
+  { to: '/gastos', etiqueta: 'Gastos', icono: 'receipt_long' },
+  { to: '/adelantos', etiqueta: 'Adelantos', icono: 'payments' },
+  { to: '/liquidaciones', etiqueta: 'Liquidaciones', icono: 'request_quote' },
+];
+
+const menuVisible = computed(() => {
+  const base = auth.esGuia ? menuGuia : menuAdmin;
+  return base.filter((item) => !item.soloAdmin || auth.esAdmin);
+});
 
 function salir() {
   auth.cerrarSesion();
