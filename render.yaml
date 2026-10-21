@@ -33,3 +33,10 @@ services:
     envVars:
       - key: VITE_API_URL
         value: https://guaiti-api.onrender.com/api/v1
+    # SPA fallback: sin esto, entrar directo a /login (o refrescar cualquier
+    # pantalla) devolvia 404 "Not Found" porque el sitio estatico no servia
+    # index.html para rutas que no son archivos reales.
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
